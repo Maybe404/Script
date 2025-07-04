@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代理协议深度对比分析信息图</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #023047;
+            color: #E0E0E0;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #8ECAE6, #FFB703);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #023e5a;
+            border: 1px solid #219EBC;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(33, 158, 188, 0.2);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1px;
+            top: 20px;
+            bottom: -20px;
+            width: 2px;
+            background-color: #219EBC;
+        }
+        .timeline-item:last-child::before {
+            display: none;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -11px;
+            top: 20px;
+            height: 20px;
+            width: 20px;
+            background-color: #FFB703;
+            border-radius: 50%;
+            border: 3px solid #023047;
+        }
+        .flowchart-box {
+            border: 2px dashed #8ECAE6;
+            background-color: rgba(142, 202, 230, 0.1);
+        }
+        .flowchart-arrow {
+            font-size: 2.5rem;
+            color: #FFB703;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 py-8 md:py-16">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 gradient-text">现代代理协议深度解析</h1>
+            <p class="text-lg md:text-xl text-[#8ECAE6]">性能、安全与场景选择的终极指南</p>
+        </header>
+
+        <section id="evolution" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-10 text-[#FFB703]">第一章：数字世界的“猫鼠游戏”</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg mb-12">
+                现代代理协议的演进史，是一部与网络审查系统持续对抗的技术史诗。从最初简单的IP封锁与DNS污染，到如今基于AI的深度包检测（DPI）与主动探测，审查技术不断升级。这迫使代理协议从追求“隐形”，转向更高明的“伪装”。
+            </p>
+
+            <div class="relative max-w-4xl mx-auto">
+                <div class="timeline-item relative pl-8 pb-8">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6]">早期阶段 (2010s前)</h3>
+                    <p class="text-md">简单的HTTP代理与传统VPN（PPTP/L2TP）足以应对基于IP黑名单的封锁。</p>
+                </div>
+                <div class="timeline-item relative pl-8 pb-8">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6]">DPI时代 (2012-2015)</h3>
+                    <p class="text-md">深度包检测（DPI）兴起，可识别协议指纹。Shadowsocks应运而生，其“看起来什么都不像”的高熵加密流量，在初期有效规避了检测。</p>
+                </div>
+                 <div class="timeline-item relative pl-8 pb-8">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6]">主动探测时代 (2015-至今)</h3>
+                    <p class="text-md">审查系统开始主动发送探测包以识别服务器身份。这暴露了Shadowsocks流式密码的弱点，催生了Trojan这类“高保真模仿”HTTPS流量的协议。</p>
+                </div>
+                <div class="timeline-item relative pl-8 pb-8">
+                    <div class="timeline-dot"></div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6]">当前前沿 (2021-至今)</h3>
+                    <p class="text-md">审查系统能够基于被动流量分析，豁免“看起来像”TLS/HTTP的流量，而封锁特征不明的加密流量。VLESS+REALITY等技术通过“借用”真实网站身份，实现了终极伪装，成为当前对抗的最高水准。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="comparison" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#FFB703]">第二章：核心协议大比拼</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg mb-12">
+                不同的协议在性能、安全性和资源消耗上各有侧重。了解它们的强弱项，是做出正确选择的第一步。
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-[#8ECAE6]">性能雷达图：综合实力对比</h3>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                    <p class="text-sm mt-4 text-gray-400">此图展示了各主流协议在三个核心性能维度的相对评分：吞吐量（速度）、延迟和抗审查能力。一个更均衡、外扩的多边形代表更全面的能力。</p>
+                </div>
+
+                <div class="card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-[#8ECAE6]">资源消耗对比</h3>
+                     <div class="chart-container h-80 md:h-96">
+                        <canvas id="resourceChart"></canvas>
+                    </div>
+                    <p class="text-sm mt-4 text-gray-400">协议的资源消耗（CPU与内存）决定了它在低功耗设备（如路由器）上的表现。WireGuard和VLESS以其轻量化设计领先。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="advanced" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#FFB703]">第三章：现代规避技术揭秘</h2>
+             <p class="max-w-3xl mx-auto text-center text-lg mb-12">
+                当今最前沿的代理技术，其精髓在于如何消除自身流量特征，完美融入海量互联网背景流量中。REALITY协议是这一思想的巅峰之作。
+            </p>
+
+            <div class="card p-6 md:p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-6 text-center text-[#8ECAE6]">REALITY协议工作原理</h3>
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="text-center">
+                        <div class="text-5xl mb-2">💻</div>
+                        <div class="font-bold">客户端</div>
+                        <p class="text-sm text-gray-400">发起连接</p>
+                    </div>
+                    
+                    <div class="flowchart-arrow transform md:rotate-0 rotate-90">→</div>
+
+                    <div class="flowchart-box p-4 rounded-lg text-center w-full md:w-1/3">
+                        <div class="text-5xl mb-2">🎭</div>
+                        <div class="font-bold">REALITY 服务器</div>
+                        <p class="text-sm text-gray-400 mt-2">1. 收到连接请求<br>2. **借用**真实网站(如microsoft.com)的TLS证书和握手信息<br>3. 返回给客户端，完成一次“看起来像”访问真实网站的TLS握手</p>
+                    </div>
+
+                    <div class="flowchart-arrow transform md:rotate-0 rotate-90">→</div>
+                    
+                    <div class="text-center">
+                        <div class="text-5xl mb-2">🌍</div>
+                        <div class="font-bold">目标网站</div>
+                        <p class="text-sm text-gray-400">成功代理</p>
+                    </div>
+                </div>
+                 <p class="text-sm mt-8 text-center text-gray-400">REALITY的核心在于“借用身份”，它不需自己的域名和证书，而是伪装成对一个不可被封锁的著名网站的常规访问，从而有效抵御基于服务器TLS指纹的主动探测。</p>
+            </div>
+        </section>
+
+        <section id="recommendations">
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#FFB703]">第四章：场景化战略部署指南</h2>
+            <p class="max-w-3xl mx-auto text-center text-lg mb-12">
+                没有“最好”的协议，只有“最适合”的方案。根据您的核心需求，选择对应的协议栈，才能获得最佳体验。
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6] mb-2">追求极致安全与抗审查</h3>
+                    <p class="text-gray-300 flex-grow">在高强度审查环境下，伪装能力是生存的第一要义。</p>
+                    <div class="mt-4 pt-4 border-t border-gray-700">
+                        <p class="font-bold text-lg text-[#FFB703]">首选方案：</p>
+                        <p class="text-lg font-mono bg-[#023047] p-2 rounded">VLESS + TCP + REALITY</p>
+                    </div>
+                </div>
+                
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6] mb-2">追求极致吞吐量与速度</h3>
+                    <p class="text-gray-300 flex-grow">在网络质量良好、无审查压力的环境下，最大化原始传输性能。</p>
+                    <div class="mt-4 pt-4 border-t border-gray-700">
+                        <p class="font-bold text-lg text-[#FFB703]">首选方案：</p>
+                        <p class="text-lg font-mono bg-[#023047] p-2 rounded">WireGuard</p>
+                    </div>
+                </div>
+
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <div class="text-4xl mb-4">🎮</div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6] mb-2">游戏与低延迟流媒体</h3>
+                    <p class="text-gray-300 flex-grow">对延迟极度敏感的应用，快速的连接建立和响应是关键。</p>
+                    <div class="mt-4 pt-4 border-t border-gray-700">
+                        <p class="font-bold text-lg text-[#FFB703]">首选方案：</p>
+                        <p class="text-lg font-mono bg-[#023047] p-2 rounded">TUIC / Hysteria2</p>
+                    </div>
+                </div>
+
+                <div class="card p-6 rounded-lg flex flex-col">
+                     <div class="text-4xl mb-4">🌊</div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6] mb-2">穿越拥塞/不稳定网络</h3>
+                    <p class="text-gray-300 flex-grow">在丢包、抖动严重的网络（如公共WiFi）中榨干每一滴带宽。</p>
+                    <div class="mt-4 pt-4 border-t border-gray-700">
+                        <p class="font-bold text-lg text-[#FFB703]">首选方案：</p>
+                        <p class="text-lg font-mono bg-[#023047] p-2 rounded">Hysteria2 (Brutal算法)</p>
+                    </div>
+                </div>
+
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <div class="text-4xl mb-4">⚙️</div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6] mb-2">通用目的与简易设置</h3>
+                    <p class="text-gray-300 flex-grow">需要一个可靠、均衡且易于部署的经典方案。</p>
+                    <div class="mt-4 pt-4 border-t border-gray-700">
+                        <p class="font-bold text-lg text-[#FFB703]">首选方案：</p>
+                        <p class="text-lg font-mono bg-[#023047] p-2 rounded">Trojan / Shadowsocks (AEAD)</p>
+                    </div>
+                </div>
+
+                <div class="card p-6 rounded-lg flex flex-col">
+                    <div class="text-4xl mb-4">🌍</div>
+                    <h3 class="text-xl font-bold text-[#8ECAE6] mb-2">需要CDN中转隐藏IP</h3>
+                    <p class="text-gray-300 flex-grow">当服务器IP被封锁时，利用CDN作为保护层。</p>
+                    <div class="mt-4 pt-4 border-t border-gray-700">
+                        <p class="font-bold text-lg text-[#FFB703]">首选方案：</p>
+                        <p class="text-lg font-mono bg-[#023047] p-2 rounded">VLESS + WebSocket + TLS</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="text-center p-8 text-gray-500">
+        <p>数据来源：现代代理与隧道协议综合分析报告。此信息图仅供技术研究与教育目的。</p>
+        <p>NEITHER Mermaid JS NOR SVG were used in this output.</p>
+    </footer>
+
+    <script>
+        const FONT_COLOR = '#E0E0E0';
+        const GRID_COLOR = 'rgba(142, 202, 230, 0.2)';
+
+        function wrapText(text, maxLen = 16) {
+            if (typeof text !== 'string' || text.length <= maxLen) {
+                return text;
+            }
+            const words = text.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).length > maxLen && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    if (currentLine.length > 0) {
+                        currentLine += ' ' + word;
+                    } else {
+                        currentLine = word;
+                    }
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const SHARED_TOOLTIP_OPTIONS = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const PALETTE = {
+            blue1: '#219EBC',
+            blue2: '#8ECAE6',
+            yellow: '#FFB703',
+            orange: '#FB8500',
+            darkBlue: '#023047'
+        };
+
+        const renderRadarChart = () => {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['吞吐量', '低延迟', '抗审查', '稳定性', '易用性'],
+                    datasets: [{
+                        label: 'VLESS+REALITY',
+                        data: [8, 8, 10, 9, 7],
+                        backgroundColor: 'rgba(251, 133, 0, 0.2)',
+                        borderColor: PALETTE.orange,
+                        pointBackgroundColor: PALETTE.orange,
+                    }, {
+                        label: 'Hysteria2',
+                        data: [10, 9, 8, 8, 6],
+                        backgroundColor: 'rgba(33, 158, 188, 0.2)',
+                        borderColor: PALETTE.blue1,
+                        pointBackgroundColor: PALETTE.blue1,
+                    }, {
+                        label: 'Trojan',
+                        data: [7, 6, 8, 8, 9],
+                        backgroundColor: 'rgba(142, 202, 230, 0.2)',
+                        borderColor: PALETTE.blue2,
+                        pointBackgroundColor: PALETTE.blue2,
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: GRID_COLOR },
+                            grid: { color: GRID_COLOR },
+                            pointLabels: { color: FONT_COLOR, font: { size: 14 } },
+                            ticks: {
+                                color: FONT_COLOR,
+                                backdropColor: PALETTE.darkBlue,
+                                stepSize: 2
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: FONT_COLOR } },
+                        tooltip: {
+                             callbacks: {
+                                title: (tooltipItems) => tooltipItems[0].dataset.label
+                            }
+                        }
+                    }
+                }
+            });
+        };
+
+        const renderResourceChart = () => {
+            const ctx = document.getElementById('resourceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['WireGuard', 'VLESS', 'Shadowsocks', 'Trojan', 'Hysteria2', 'VMess'],
+                    datasets: [{
+                        label: '相对资源消耗 (越低越好)',
+                        data: [1, 2, 2.5, 3.5, 4, 6],
+                        backgroundColor: [PALETTE.blue2, PALETTE.blue1, '#6abecd', PALETTE.yellow, PALETTE.orange, '#d46e00'],
+                        borderColor: PALETTE.darkBlue,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: { color: GRID_COLOR },
+                            ticks: { color: FONT_COLOR }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: FONT_COLOR, font: {size: 14} }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: SHARED_TOOLTIP_OPTIONS.plugins.tooltip
+                    }
+                }
+            });
+        };
+
+        window.onload = function() {
+            renderRadarChart();
+            renderResourceChart();
+        };
+
+    </script>
+</body>
+</html>
